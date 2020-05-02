@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Game from "./Game";
 
 const App = () => {
+  const [maxstars, setMaxstars] = useState(16);
+  const [timelimit, setTimelimit] = useState(20);
   return (
     <div className="app">
-      <Game />
+      <Game maxstars={maxstars} timelimit={timelimit} />
     </div>
   );
 };

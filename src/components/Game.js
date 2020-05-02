@@ -8,15 +8,15 @@ import useGameState from "../hooks/UseGameState";
 
 function Game(props) {
   const {
-    stars,        
+    stars,
     availableNums,
     candidateNums,
     secondsLeft,
     totalScore,
     setTotalScore,
     setGameState,
-    resetGame
-  } = useGameState();
+    resetGame,
+  } = useGameState(props);
 
   const candidateAreWrong = utils.total(candidateNums) > stars;
   const gameStatus =
@@ -27,7 +27,7 @@ function Game(props) {
       setTotalScore(totalScore + secondsLeft * 10 + 10);
     }
   }, [gameStatus]);
-  
+
   const setNumberStatus = (number) => {
     if (!availableNums.includes(number)) return "used";
     if (candidateNums.includes(number))
@@ -47,25 +47,20 @@ function Game(props) {
 
   return (
     <div className="game">
-      <div className="score">
-        Score: {totalScore}
-      </div>
+      <div className="score">Score: {totalScore}</div>
       <div className="help">
         Pick one or more numbers that sum to the number of stars
       </div>
       <div className="body">
         <div className="left">
           {gameStatus !== "active" ? (
-            <PlayAgain
-              onClickPlayAgain={resetGame}
-              gameStatus={gameStatus}
-            />
+            <PlayAgain onClickPlayAgain={resetGame} gameStatus={gameStatus} />
           ) : (
             <StarsDisplay stars={stars} />
           )}
         </div>
         <div className="right">
-          {utils.range(1, 9).map((id) => (
+          {utils.range(1, props.maxstars).map((id) => (
             <PlayNumber
               key={id}
               number={id}
