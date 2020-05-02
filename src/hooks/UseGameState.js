@@ -6,6 +6,7 @@ const useGameState = () => {
     const [availableNums, setAvailableNums] = useState(utils.range(1,9));
     const [candidateNums, setCandidateNums] = useState([]);
     const [secondsLeft, setSecondsLeft] = useState(10);
+    const [totalScore, setTotalScore] = useState(0);
 
     useEffect(() => {
         if (secondsLeft > 0 && availableNums.length > 0) {
@@ -29,7 +30,14 @@ const useGameState = () => {
         }
     }
 
-    return { stars, availableNums, candidateNums, secondsLeft, setGameState };
+    const resetGame = () => {
+        setStars(utils.random(1, 9));
+        setAvailableNums(utils.range(1, 9));
+        setCandidateNums([]);
+        setSecondsLeft(10);
+    }
+
+    return { stars, availableNums, candidateNums, secondsLeft, totalScore, setTotalScore, setGameState, resetGame };
 }
 
 export default useGameState;

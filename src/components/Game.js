@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import utils from "../utils";
 import PlayNumber from "./PlayNumber";
@@ -8,21 +8,26 @@ import useGameState from "../hooks/UseGameState";
 
 function Game(props) {
   const {
-    stars,
+    stars,        
     availableNums,
     candidateNums,
     secondsLeft,
+    totalScore,
+    setTotalScore,
     setGameState,
+    resetGame
   } = useGameState();
 
   const candidateAreWrong = utils.total(candidateNums) > stars;
   const gameStatus =
     availableNums.length === 0 ? "won" : secondsLeft === 0 ? "lost" : "active";
 
-  // if (gameStatus === "won") {
-  //   props.setScore(secondsLeft * 10 + 10);
-  // }
-
+  useEffect(() => {
+    if (gameStatus === "won") {
+      setTotalScore(totalScore + secondsLeft * 10 + 10);
+    }
+  }, [gameStatus]);
+  
   const setNumberStatus = (number) => {
     if (!availableNums.includes(number)) return "used";
     if (candidateNums.includes(number))
@@ -42,6 +47,9 @@ function Game(props) {
 
   return (
     <div className="game">
+      <div className="score">
+        Score: {totalScore}
+      </div>
       <div className="help">
         Pick one or more numbers that sum to the number of stars
       </div>
@@ -49,7 +57,7 @@ function Game(props) {
         <div className="left">
           {gameStatus !== "active" ? (
             <PlayAgain
-              onClickPlayAgain={props.setGameId}
+              onClickPlayAgain={resetGame}
               gameStatus={gameStatus}
             />
           ) : (
