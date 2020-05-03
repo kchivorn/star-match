@@ -46,7 +46,7 @@ function Game(props) {
   };
 
   return (
-    <div className="game">
+    <div className="game" style={{maxWidth: Math.floor(Math.sqrt(props.maxstars)) * 2 * 74 }}>
       <div className="score">Score: {totalScore}</div>
       <div className="help">
         Pick one or more numbers that sum to the number of stars
